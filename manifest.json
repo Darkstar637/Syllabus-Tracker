@@ -1,4 +1,5 @@
 {
+  "id": "com.darkstar.syllabustracker",
   "name": "Syllabus Tracker",
   "short_name": "Syllabus",
   "description": "Offline-first syllabus progress tracker for subjects, chapters, and topics.",
@@ -7,6 +8,7 @@
   "display": "standalone",
   "background_color": "#f6f8fb",
   "theme_color": "#111827",
+  "categories": ["education", "productivity"],
   "orientation": "any",
   "icons": [
     {
@@ -20,6 +22,20 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+      "screenshots": [
+  {
+    "src": "screenshots/dashboard.png",
+    "sizes": "1280x720",
+    "type": "image/png",
+    "label": "Dashboard"
+  },
+  {
+    "src": "screenshots/subjects.png",
+    "sizes": "1280x720",
+    "type": "image/png",
+    "label": "Subjects"
+  }
+      ]
     }
   ]
 }
