@@ -1,4 +1,4 @@
-const CACHE_NAME = "syllabus-tracker-v1";
+const CACHE_NAME = "nexus-track-v1";
 const LOCAL_ASSETS = [
   "./",
   "./index.html",
