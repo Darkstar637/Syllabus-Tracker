@@ -1,7 +1,7 @@
 {
   "id": "com.darkstar.nexustrack",
   "name": "Nexus Track",
-  "short_name": "Nexzus",
+  "short_name": "Nexus",
   "description": "Offline-first syllabus progress tracker for subjects, chapters, and topics.",
   "start_url": "./index.html",
   "scope": "./",
