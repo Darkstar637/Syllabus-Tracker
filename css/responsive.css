@@ -1,0 +1,176 @@
+@media (max-width: 1180px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    transform: translateX(-105%);
+    transition: transform var(--transition);
+    box-shadow: var(--shadow);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    padding: 18px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .topbar {
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .stat-card {
+    min-height: 118px;
+    padding: 15px;
+  }
+
+  .panel,
+  .empty-panel {
+    padding: 16px;
+  }
+
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .section-header .primary-button {
+    width: 100%;
+  }
+
+  .toolbar,
+  .split-toolbar,
+  .settings-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar div,
+  .toolbar select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .main-content {
+    padding: 14px;
+  }
+
+  .topbar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+  }
+
+  .topbar h2 {
+    font-size: 1.35rem;
+  }
+
+  .stats-grid,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    min-height: auto;
+  }
+
+  .chart-frame,
+  .chart-frame canvas {
+    min-height: 260px;
+    height: 260px !important;
+  }
+
+  .panel-header,
+  .modal-header {
+    align-items: flex-start;
+  }
+
+  .compact-list li,
+  .list-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .card-actions,
+  .modal-actions {
+    width: 100%;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button,
+  .card-actions button,
+  .settings-actions button,
+  .settings-row button {
+    width: 100%;
+  }
+
+  .settings-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .sidebar {
+    width: min(100vw, var(--sidebar-width));
+  }
+
+  .brand {
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+
+  .topbar {
+    grid-template-columns: auto 1fr;
+  }
+
+  .topbar-actions {
+    grid-column: 1 / -1;
+  }
+
+  .topbar-actions .icon-button {
+    width: 100%;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .theme-toggle,
+  .nav-link {
+    min-height: 46px;
+  }
+}

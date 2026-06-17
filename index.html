@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A fast, offline-ready syllabus tracker dashboard for subjects, chapters, topics, and reports."
+    />
+    <meta name="theme-color" content="#111827" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Syllabus" />
+    <title>Syllabus Tracker</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+    <script src="js/subjects.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">ST</span>
+          <div>
+            <h1>Syllabus Tracker</h1>
+            <p>Study progress dashboard</p>
+          </div>
+        </div>
+
+        <nav class="nav-menu" aria-label="Primary navigation">
+          <button class="nav-link active" type="button" data-view="dashboard">
+            <span aria-hidden="true">⌂</span>
+            Dashboard
+          </button>
+          <button class="nav-link" type="button" data-view="subjects">
+            <span aria-hidden="true">□</span>
+            Subjects
+          </button>
+          <button class="nav-link" type="button" data-view="chapters">
+            <span aria-hidden="true">▤</span>
+            Chapters
+          </button>
+          <button class="nav-link" type="button" data-view="topics">
+            <span aria-hidden="true">✓</span>
+            Topics
+          </button>
+          <button class="nav-link" type="button" data-view="reports">
+            <span aria-hidden="true">◷</span>
+            Reports
+          </button>
+          <button class="nav-link" type="button" data-view="settings">
+            <span aria-hidden="true">⚙</span>
+            Settings
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+            <span class="toggle-icon" aria-hidden="true">◐</span>
+            <span>Dark mode</span>
+          </button>
+          <p>Saved automatically on this device.</p>
+        </div>
+      </aside>
+
+      <div class="mobile-backdrop" id="mobileBackdrop" hidden></div>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <p class="eyebrow">Today</p>
+            <h2 id="pageTitle">Dashboard</h2>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="quickAddButton" type="button" aria-label="Quick add item">
+              +
+            </button>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboardView" data-view-panel="dashboard">
+          <div class="stats-grid" aria-label="Syllabus summary">
+            <article class="stat-card highlight">
+              <p>Overall Progress</p>
+              <strong id="overallProgress">0%</strong>
+              <span id="overallProgressLabel">No topics completed yet</span>
+            </article>
+            <article class="stat-card">
+              <p>Total Subjects</p>
+              <strong id="totalSubjects">0</strong>
+              <span>Active syllabus areas</span>
+            </article>
+            <article class="stat-card">
+              <p>Total Chapters</p>
+              <strong id="totalChapters">0</strong>
+              <span>Grouped study units</span>
+            </article>
+            <article class="stat-card">
+              <p>Total Topics</p>
+              <strong id="totalTopics">0</strong>
+              <span>Trackable tasks</span>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel chart-panel" aria-labelledby="progressChartTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Progress</p>
+                  <h3 id="progressChartTitle">Completion Overview</h3>
+                </div>
+              </div>
+              <div class="chart-frame">
+                <canvas id="progressChart" aria-label="Overall syllabus progress chart"></canvas>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="recentTopicsTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Focus</p>
+                  <h3 id="recentTopicsTitle">Recent Topics</h3>
+                </div>
+              </div>
+              <ul class="compact-list" id="recentTopicsList">
+                <li class="empty-state">Add topics to see recent activity.</li>
+              </ul>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="subjectsView" data-view-panel="subjects">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Manage</p>
+              <h2>Subjects</h2>
+            </div>
+            <button class="primary-button" type="button" data-action="add-subject">Add Subject</button>
+          </div>
+          <div class="content-grid" id="subjectsList">
+            <article class="empty-panel">
+              <h3>No subjects yet</h3>
+              <p>Create a subject to start organizing chapters and topics.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="chaptersView" data-view-panel="chapters">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Manage</p>
+              <h2>Chapters</h2>
+            </div>
+            <button class="primary-button" type="button" data-action="add-chapter">Add Chapter</button>
+          </div>
+          <div class="toolbar">
+            <label for="chapterSubjectFilter">Subject</label>
+            <select id="chapterSubjectFilter">
+              <option value="all">All subjects</option>
+            </select>
+          </div>
+          <div class="content-grid" id="chaptersList">
+            <article class="empty-panel">
+              <h3>No chapters yet</h3>
+              <p>Add chapters inside each subject to build your syllabus map.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="topicsView" data-view-panel="topics">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Manage</p>
+              <h2>Topics</h2>
+            </div>
+            <button class="primary-button" type="button" data-action="add-topic">Add Topic</button>
+          </div>
+          <div class="toolbar split-toolbar">
+            <div>
+              <label for="topicSubjectFilter">Subject</label>
+              <select id="topicSubjectFilter">
+                <option value="all">All subjects</option>
+              </select>
+            </div>
+            <div>
+              <label for="topicStatusFilter">Status</label>
+              <select id="topicStatusFilter">
+                <option value="all">All topics</option>
+                <option value="complete">Complete</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+          </div>
+          <div class="topic-list" id="topicsList">
+            <article class="empty-panel">
+              <h3>No topics yet</h3>
+              <p>Break chapters into small topics and mark them complete as you study.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="reportsView" data-view-panel="reports">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Reports</p>
+              <h2>Subject-wise Progress</h2>
+            </div>
+          </div>
+          <div class="reports-list" id="reportsList">
+            <article class="empty-panel">
+              <h3>No report data</h3>
+              <p>Reports appear once subjects and topics are available.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="settingsView" data-view-panel="settings">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Preferences</p>
+              <h2>Settings</h2>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <section class="panel" aria-labelledby="appearanceTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Display</p>
+                  <h3 id="appearanceTitle">Appearance</h3>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div>
+                  <strong>Dark mode</strong>
+                  <p>Switch between light and dark dashboard themes.</p>
+                </div>
+                <button class="secondary-button" id="settingsThemeToggle" type="button">Toggle Theme</button>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="backupTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Backup</p>
+                  <h3 id="backupTitle">Import and Export</h3>
+                </div>
+              </div>
+              <div class="settings-actions">
+                <button class="primary-button" id="exportJsonButton" type="button">Export JSON</button>
+                <button class="secondary-button" id="importJsonButton" type="button">Import JSON</button>
+                <input id="importJsonInput" type="file" accept="application/json,.json" hidden />
+              </div>
+              <p class="settings-note" id="importStatus">JSON backups include subjects, chapters, topics, and completion states.</p>
+            </section>
+
+            <section class="panel danger-panel" aria-labelledby="resetTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Storage</p>
+                  <h3 id="resetTitle">Data Reset</h3>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div>
+                  <strong>Reset local data</strong>
+                  <p>Remove all saved subjects, chapters, topics, and progress from this device.</p>
+                </div>
+                <button class="secondary-button danger-button" id="resetDataButton" type="button">Reset Data</button>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="dataSummaryTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">LocalStorage</p>
+                  <h3 id="dataSummaryTitle">Data Summary</h3>
+                </div>
+              </div>
+              <div class="settings-summary" id="settingsSummary">
+                <span>Subjects: 0</span>
+                <span>Chapters: 0</span>
+                <span>Topics: 0</span>
+                <span>Completed: 0</span>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="modal" id="entryModal">
+      <form method="dialog" class="modal-card" id="entryForm">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow" id="modalEyebrow">Entry</p>
+            <h2 id="modalTitle">Add Item</h2>
+          </div>
+          <button class="icon-button ghost" type="button" id="modalCloseButton" aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <div class="form-grid" id="modalFields"></div>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" id="modalCancelButton">Cancel</button>
+          <button class="primary-button" type="submit" id="modalSubmitButton">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="cardActionsTemplate">
+      <div class="card-actions">
+        <button class="text-button" type="button" data-action="edit">Edit</button>
+        <button class="text-button danger" type="button" data-action="delete">Delete</button>
+      </div>
+    </template>
+  </body>
+</html>
