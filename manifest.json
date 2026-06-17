@@ -22,20 +22,8 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-      "screenshots": [
-  {
-    "src": "screenshots/dashboard.png",
-    "sizes": "1280x720",
-    "type": "image/png",
-    "label": "Dashboard"
-  },
-  {
-    "src": "screenshots/subjects.png",
-    "sizes": "1280x720",
-    "type": "image/png",
-    "label": "Subjects"
-  }
-      ]
+      
+      
     }
   ]
 }
